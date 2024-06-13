@@ -94,6 +94,8 @@ outputs:
     description: 'Relative link for the base commit'
   base_ref:
     description: 'Base branch name'
+  coverage_project:
+    description: 'Coverage project'
 runs:
   using: 'node16'
   main: 'dist/index.js'
