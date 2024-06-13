@@ -3,6 +3,7 @@ const { trimBasePath } = require('./utils');
 const { formatPercentWithIndicator, formatPercentDiff } = require('./format');
 
 const OUTPUT_BLANK = {
+  [ActionOutput.coverage_project]: '?',
   [ActionOutput.total_lines_coverage_percent]: '?',
   [ActionOutput.total_statements_coverage_percent]: '?',
   [ActionOutput.total_functions_coverage_percent]: '?',
