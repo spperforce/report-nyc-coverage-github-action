@@ -5,6 +5,7 @@ module.exports = {
     sources_base_path: 'sources_base_path',
     comment_template_file: 'comment_template_file',
     comment_mode: 'comment_mode',
+    coverage_project: 'coverage_project',
     files_coverage_table_output_type_order: 'files_coverage_table_output_type_order',
   },
   ActionOutput: {
@@ -48,6 +49,7 @@ module.exports = {
     base_short_commit_sha: 'base_short_commit_sha',
     base_commit_link: 'base_commit_link',
     base_ref: 'base_ref',
+    coverage_project: 'coverage_project'
   },
   InternalToken: {
     files_coverage_data: 'files_coverage_data',

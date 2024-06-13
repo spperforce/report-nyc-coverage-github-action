@@ -1,4 +1,4 @@
-## Coverage Report
+## Coverage Report - {{coverage_project}}
 
 Commit: [{{short_commit_sha}}]({{commit_link}})
 Base: [{{base_ref}}@{{base_short_commit_sha}}]({{base_commit_link}})

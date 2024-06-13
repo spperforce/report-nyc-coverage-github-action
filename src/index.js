@@ -25,6 +25,8 @@ async function run() {
   }
 
   const coverageFile = core.getInput(ActionInput.coverage_file);
+  const getCoveragePackage = core.getInput(ActionInput.coverage_project);
+
   const coverageSummaryJSONPath = path.resolve(coverageFile);
   const coverageSummaryJSON = JSON.parse(
     fs.readFileSync(coverageSummaryJSONPath, { encoding: 'utf-8' }),
@@ -49,6 +51,7 @@ async function run() {
     basePath: core.getInput(ActionInput.sources_base_path),
     changedFiles,
     baseCoverageSummaryJSON,
+    coveragePackage: core.getInput(ActionInput.coverage_project),
   });
 
   const commitSHA = github.context.payload.pull_request.head.sha;
@@ -111,7 +114,7 @@ async function run() {
 
   const octokit = await github.getOctokit(gitHubToken);
   const existingComment =
-    commentMode === 'replace' ? await findCommentByBody(octokit, commentMark) : null;
+    commentMode === 'replace' ? await findCommentByBody(octokit, commentMark + getCoveragePackage) : null;
 
   if (existingComment) {
     await octokit.rest.issues.updateComment({
