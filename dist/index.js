@@ -10725,6 +10725,7 @@ module.exports = {
     sources_base_path: 'sources_base_path',
     comment_template_file: 'comment_template_file',
     comment_mode: 'comment_mode',
+    coverage_project: 'coverage_project',
     files_coverage_table_output_type_order: 'files_coverage_table_output_type_order',
   },
   ActionOutput: {
@@ -10768,6 +10769,7 @@ module.exports = {
     base_short_commit_sha: 'base_short_commit_sha',
     base_commit_link: 'base_commit_link',
     base_ref: 'base_ref',
+    coverage_project: 'coverage_project'
   },
   InternalToken: {
     files_coverage_data: 'files_coverage_data',
@@ -10891,6 +10893,7 @@ const { trimBasePath } = __nccwpck_require__(1608);
 const { formatPercentWithIndicator, formatPercentDiff } = __nccwpck_require__(5945);
 
 const OUTPUT_BLANK = {
+  [ActionOutput.coverage_project]: '?',
   [ActionOutput.total_lines_coverage_percent]: '?',
   [ActionOutput.total_statements_coverage_percent]: '?',
   [ActionOutput.total_functions_coverage_percent]: '?',
@@ -10917,7 +10920,7 @@ const OUTPUT_BLANK = {
   [ActionOutput.total_branches_coverage_percent_diff_raw]: '?',
 };
 
-function parseCoverageSummaryJSON(json, { changedFiles, basePath, baseCoverageSummaryJSON } = {}) {
+function parseCoverageSummaryJSON(json, { changedFiles, basePath, baseCoverageSummaryJSON, coveragePackage = '' } = {}) {
   const total = json.total;
   delete json.total;
 
@@ -10945,6 +10948,7 @@ function parseCoverageSummaryJSON(json, { changedFiles, basePath, baseCoverageSu
     [ActionOutput.total_statements_coverage_percent_raw]: total.statements.pct,
     [ActionOutput.total_functions_coverage_percent_raw]: total.functions.pct,
     [ActionOutput.total_branches_coverage_percent_raw]: total.branches.pct,
+    [ActionOutput.coverage_project]: coveragePackage
   });
 
   const other = {
@@ -10992,6 +10996,7 @@ function parseCoverageSummaryJSON(json, { changedFiles, basePath, baseCoverageSu
         total.functions.pct - baseTotal.functions.pct,
       [ActionOutput.total_branches_coverage_percent_diff_raw]:
         total.branches.pct - baseTotal.branches.pct,
+      [ActionOutput.coverage_project]: coveragePackage
     });
   }
 
@@ -11308,6 +11313,8 @@ async function run() {
   }
 
   const coverageFile = core.getInput(ActionInput.coverage_file);
+  const getCoveragePackage = core.getInput(ActionInput.coverage_project);
+
   const coverageSummaryJSONPath = path.resolve(coverageFile);
   const coverageSummaryJSON = JSON.parse(
     fs.readFileSync(coverageSummaryJSONPath, { encoding: 'utf-8' }),
@@ -11332,6 +11339,7 @@ async function run() {
     basePath: core.getInput(ActionInput.sources_base_path),
     changedFiles,
     baseCoverageSummaryJSON,
+    coveragePackage: core.getInput(ActionInput.coverage_project),
   });
 
   const commitSHA = github.context.payload.pull_request.head.sha;
@@ -11394,7 +11402,7 @@ async function run() {
 
   const octokit = await github.getOctokit(gitHubToken);
   const existingComment =
-    commentMode === 'replace' ? await findCommentByBody(octokit, commentMark) : null;
+    commentMode === 'replace' ? await findCommentByBody(octokit, commentMark + getCoveragePackage) : null;
 
   if (existingComment) {
     await octokit.rest.issues.updateComment({

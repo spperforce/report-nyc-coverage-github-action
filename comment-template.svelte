@@ -17,6 +17,7 @@
   export let base_short_commit_sha;
   export let base_commit_link;
   export let base_ref;
+  export let coverage_project;
 
   export let changed_files_coverage_data;
 
@@ -108,7 +109,7 @@
   }
 </script>
 
-<h2>Coverage Report</h2>
+<h2>Coverage Report - {coverage_project}</h2>
 
 Commit:<a href={commit_link}>{short_commit_sha}</a><br />
 Base: <a href={base_commit_link}>{base_ref}@{base_short_commit_sha}</a><br /><br />

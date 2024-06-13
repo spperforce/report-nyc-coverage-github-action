@@ -106,6 +106,7 @@ function parseCoverageSummaryJSON(json, { changedFiles, basePath, baseCoverageSu
         total.functions.pct - baseTotal.functions.pct,
       [ActionOutput.total_branches_coverage_percent_diff_raw]:
         total.branches.pct - baseTotal.branches.pct,
+      [ActionOutput.coverage_project]: coveragePackage
     });
   }
 
