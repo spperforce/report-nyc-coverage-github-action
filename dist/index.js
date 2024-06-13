@@ -11313,7 +11313,7 @@ async function run() {
   }
 
   const coverageFile = core.getInput(ActionInput.coverage_file);
-  const getCoveragePackage = core.getInput(ActionInput.coverage_project);
+  const coveragePackage = core.getInput(ActionInput.coverage_project);
 
   const coverageSummaryJSONPath = path.resolve(coverageFile);
   const coverageSummaryJSON = JSON.parse(
@@ -11370,7 +11370,7 @@ async function run() {
   };
 
   const commentTemplateFilePath = path.resolve(core.getInput(ActionInput.comment_template_file));
-  const commentMark = `<!-- ${DEFAULT_COMMENT_MARKER} -->`;
+  const commentMark = `<!-- ${DEFAULT_COMMENT_MARKER}${coveragePackage} -->`;
 
   let commentBody;
   if (commentTemplateFilePath.endsWith('.svelte')) {
@@ -11402,7 +11402,7 @@ async function run() {
 
   const octokit = await github.getOctokit(gitHubToken);
   const existingComment =
-    commentMode === 'replace' ? await findCommentByBody(octokit, commentMark + getCoveragePackage) : null;
+    commentMode === 'replace' ? await findCommentByBody(octokit, commentMark) : null;
 
   if (existingComment) {
     await octokit.rest.issues.updateComment({
