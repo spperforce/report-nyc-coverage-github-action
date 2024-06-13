@@ -29,7 +29,7 @@ const OUTPUT_BLANK = {
   [ActionOutput.total_branches_coverage_percent_diff_raw]: '?',
 };
 
-function parseCoverageSummaryJSON(json, { changedFiles, basePath, baseCoverageSummaryJSON } = {}) {
+function parseCoverageSummaryJSON(json, { changedFiles, basePath, baseCoverageSummaryJSON, coveragePackage = '' } = {}) {
   const total = json.total;
   delete json.total;
 
@@ -57,6 +57,7 @@ function parseCoverageSummaryJSON(json, { changedFiles, basePath, baseCoverageSu
     [ActionOutput.total_statements_coverage_percent_raw]: total.statements.pct,
     [ActionOutput.total_functions_coverage_percent_raw]: total.functions.pct,
     [ActionOutput.total_branches_coverage_percent_raw]: total.branches.pct,
+    [ActionOutput.coverage_project]: coveragePackage
   });
 
   const other = {
