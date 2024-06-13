@@ -29,8 +29,8 @@ inputs:
     description: 'Specify the order for coverage types to be included in the output table. (S: statements, B: branches, F: functions, L: lines). Missing types will be excluded.'
     default: 'SBFL'
     required: false
-  coverage_package:
-    description: 'Specify the coverage package. This is used to categorized coverage report based provided package and can mainly be used in a monorepo application'
+  coverage_project:
+    description: 'Specify the coverage project. This is used to categorized coverage report based provided package and can mainly be used in a monorepo application'
     default: ''
     required: false
 outputs:
